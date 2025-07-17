@@ -7,112 +7,94 @@
   <title>Admin Panel - Jeet365</title>
   <style>
     body {
-      font-family: Arial;
+      font-family: sans-serif;
+      background: #111;
+      color: #fff;
       padding: 20px;
-      background-color: #0d0d0d;
-      color: white;
     }
-    h2 {
-      text-align: center;
-    }
+    h2 { color: #00ff99; }
     .request {
-      border: 1px solid #444;
+      background: #222;
       padding: 15px;
       margin: 10px 0;
       border-radius: 10px;
-      background-color: #1a1a1a;
     }
-    .request button {
+    button {
+      padding: 6px 12px;
       margin: 5px;
-      padding: 5px 10px;
       border: none;
       border-radius: 5px;
       cursor: pointer;
     }
-    .approve { background-color: green; color: white; }
-    .reject { background-color: red; color: white; }
+    .approve { background: green; color: #fff; }
+    .reject { background: red; color: #fff; }
   </style>
 </head>
 <body>
-  <h2>Admin Panel - Coin Requests</h2>
-  <div id="requestList">Loading...</div>
+  <h2>Admin Panel - Jeet365</h2>
+  <div id="requestList">Loading requests...</div>
 
   <script type="module">
     import { auth, db } from './firebase-config.js';
     import {
-      onAuthStateChanged
-    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import {
-      collection, query, where, getDocs, updateDoc, doc, getDoc
+      getDocs,
+      collection,
+      updateDoc,
+      doc,
+      getDoc
     } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
     const requestList = document.getElementById("requestList");
+    const ADMIN_EMAIL = "admin@example.com"; // ✅ Change to your admin email
 
     onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        const userRef = doc(db, "users", user.uid);
-        const userSnap = await getDoc(userRef);
-        if (!userSnap.exists() || !userSnap.data().isAdmin) {
-          alert("Access denied. Not an admin.");
-          window.location.href = "index.html";
-          return;
-        }
-
-        const q = query(collection(db, "requests"), where("status", "==", "pending"));
-        const querySnapshot = await getDocs(q);
-        requestList.innerHTML = "";
-
-        if (querySnapshot.empty) {
-          requestList.innerHTML = "<p>No pending requests.</p>";
-        }
-
-        querySnapshot.forEach(docSnap => {
-          const data = docSnap.data();
-          const div = document.createElement("div");
-          div.className = "request";
-          div.innerHTML = `
-            <p><b>Email:</b> ${data.email}</p>
-            <p><b>Type:</b> ${data.type}</p>
-            <p><b>Amount:</b> ${data.amount}</p>
-            <p><b>Status:</b> ${data.status}</p>
-            <button class="approve">Approve</button>
-            <button class="reject">Reject</button>
-          `;
-
-          div.querySelector(".approve").onclick = async () => {
-            await updateDoc(doc(db, "requests", docSnap.id), {
-              status: "approved"
-            });
-            if (data.type === "add") {
-              const userRef = doc(db, "users", data.uid);
-              const userSnap = await getDoc(userRef);
-              if (userSnap.exists()) {
-                const currentCoins = userSnap.data().coins || 0;
-                await updateDoc(userRef, {
-                  coins: currentCoins + data.amount
-                });
-              }
-            }
-            alert("Approved successfully");
-            location.reload();
-          };
-
-          div.querySelector(".reject").onclick = async () => {
-            await updateDoc(doc(db, "requests", docSnap.id), {
-              status: "rejected"
-            });
-            alert("Rejected successfully");
-            location.reload();
-          };
-
-          requestList.appendChild(div);
-        });
-
-      } else {
-        alert("Please login");
+      if (!user || user.email !== ADMIN_EMAIL) {
+        alert("Access denied.");
         window.location.href = "login.html";
+        return;
       }
+      loadRequests();
     });
+
+    async function loadRequests() {
+      requestList.innerHTML = "";
+      const querySnapshot = await getDocs(collection(db, "requests"));
+      querySnapshot.forEach(async (docSnap) => {
+        const data = docSnap.data();
+        if (data.status === "approved" || data.status === "rejected") return;
+
+        const div = document.createElement("div");
+        div.className = "request";
+        div.innerHTML = `
+          <strong>${data.type.toUpperCase()} Request</strong><br/>
+          Email: ${data.email}<br/>
+          Amount: ${data.amount}<br/>
+          <button class="approve">Approve</button>
+          <button class="reject">Reject</button>
+        `;
+
+        div.querySelector(".approve").onclick = async () => {
+          const userRef = doc(db, "users", data.uid);
+          const userSnap = await getDoc(userRef);
+          let currentCoins = userSnap.data().coins || 0;
+          const finalCoins = data.type === "add" ? currentCoins + data.amount : currentCoins - data.amount;
+
+          await updateDoc(userRef, { coins: finalCoins });
+          await updateDoc(doc(db, "requests", docSnap.id), { status: "approved" });
+          alert("Approved successfully.");
+          loadRequests();
+        };
+
+        div.querySelector(".reject").onclick = async () => {
+          await updateDoc(doc(db, "requests", docSnap.id), { status: "rejected" });
+          alert("Rejected.");
+          loadRequests();
+        };
+
+        requestList.appendChild(div);
+      });
+    }
   </script>
 </body>
 </html>
