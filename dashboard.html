@@ -1,82 +1,31 @@
-<!-- dashboard.html -->
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Dashboard - Jeet365</title>
-  <style>
-    body {
-      background: #111;
-      color: #fff;
-      font-family: Arial;
-      padding: 20px;
-    }
-    h2 {
-      text-align: center;
-    }
-    .coin-box {
-      text-align: center;
-      font-size: 18px;
-      margin: 15px 0;
-    }
-    .nav, .games {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 15px;
-      margin-top: 20px;
-    }
-    .nav a, .games a {
-      background: #333;
-      color: #fff;
-      padding: 12px 20px;
-      border-radius: 10px;
-      text-decoration: none;
-      transition: background 0.3s;
-    }
-    .nav a:hover, .games a:hover {
-      background: #0f0;
-      color: #000;
-    }
-  </style>
+  <title>Dashboard | Jeet365</title>
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="js/dashboard.js"></script>
 </head>
 <body>
-  <h2>🎯 Jeet365 Dashboard</h2>
-  <div class="coin-box" id="coinBalance">Coins: Loading...</div>
+  <header>
+    <h2>Welcome to Jeet365 Dashboard</h2>
+    <button onclick="logout()">Logout</button>
+  </header>
 
-  <div class="nav">
-    <a href="index.html">🏠 Home</a>
-    <a href="request.html">💰 Wallet</a>
-    <a href="logout.html">🚪 Logout</a>
-  </div>
+  <section>
+    <h3>Your Coin Balance: <span id="coinBalance">Loading...</span></h3>
 
-  <h3 style="text-align:center; margin-top:30px;">🎮 Games</h3>
-  <div class="games">
-    <a href="color.html">🎨 Color Prediction</a>
-    <a href="number.html">🔢 Number Prediction</a>
-  </div>
-
-  <script type="module">
-    import { auth, db } from './firebase-config.js';
-    import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-    const coinEl = document.getElementById("coinBalance");
-
-    onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        const userDoc = await getDoc(doc(db, "users", user.uid));
-        if (userDoc.exists()) {
-          const coins = userDoc.data().coins || 0;
-          coinEl.innerText = "Coins: " + coins;
-        } else {
-          coinEl.innerText = "No data found.";
-        }
-      } else {
-        window.location.href = "login.html";
-      }
-    });
-  </script>
+    <button onclick="location.href='game.html'">🎯 Play Color Game</button>
+    <button onclick="location.href='number.html'">🔢 Play Number Game</button>
+    
+    <h4>Request Coins</h4>
+    <form id="requestForm">
+      <select id="requestType">
+        <option value="add">Add Coins</option>
+        <option value="withdraw">Withdraw Coins</option>
+      </select>
+      <input type="number" id="requestAmount" placeholder="Enter amount" required>
+      <button type="submit">Submit Request</button>
+    </form>
+  </section>
 </body>
 </html>
