@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Play Game - Jeet365</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="game-container">
+    <h2>🎮 Color & Number Prediction</h2>
+    <p>Coins: <span id="userCoins">0</span></p>
+
+    <!-- Color Prediction -->
+    <div class="game-section">
+      <h3>🎨 Color Prediction</h3>
+      <form id="colorForm">
+        <select id="colorChoice" required>
+          <option value="">Choose Color</option>
+          <option value="Red">🔴 Red</option>
+          <option value="Green">🟢 Green</option>
+          <option value="Blue">🔵 Blue</option>
+        </select>
+        <input type="number" id="colorBet" placeholder="Bet Amount" min="10" required />
+        <button type="submit">Predict Color</button>
+      </form>
+      <p id="colorResult"></p>
+    </div>
+
+    <!-- Number Prediction -->
+    <div class="game-section">
+      <h3>🔢 Number Prediction</h3>
+      <form id="numberForm">
+        <input type="number" id="numberChoice" placeholder="Choose Number (0-9)" min="0" max="9" required />
+        <input type="number" id="numberBet" placeholder="Bet Amount" min="10" required />
+        <button type="submit">Predict Number</button>
+      </form>
+      <p id="numberResult"></p>
+    </div>
+
+    <a href="dashboard.html" class="btn">⬅ Back to Dashboard</a>
+  </div>
+
+  <script type="module" src="game.js"></script>
+</body>
+</html>
