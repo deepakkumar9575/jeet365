@@ -1,0 +1,122 @@
+<!-- number.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Number Prediction Game - Jeet365</title>
+  <style>
+    body {
+      background: #000;
+      color: #fff;
+      font-family: Arial;
+      padding: 20px;
+    }
+    h2 {
+      text-align: center;
+    }
+    .balance {
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
+    .game {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .game input, .game button {
+      padding: 10px;
+      margin: 10px;
+      font-size: 16px;
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h2>🎯 Jeet365 - Number Prediction Game</h2>
+  <div class="balance" id="balance">Coins: Loading...</div>
+
+  <div class="game">
+    <label>Enter a number (1–10):</label>
+    <input type="number" id="guessNumber" min="1" max="10" placeholder="Your guess" />
+
+    <label>Bet Amount:</label>
+    <input type="number" id="betAmount" min="10" placeholder="Min 10 coins" />
+
+    <button onclick="playNumberGame()">Play</button>
+    <div class="result" id="result"></div>
+  </div>
+
+  <script type="module">
+    import { auth, db } from './firebase-config.js';
+    import {
+      doc, getDoc, updateDoc
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import {
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+    let currentUser = null;
+    let currentCoins = 0;
+
+    const balanceEl = document.getElementById("balance");
+    const resultEl = document.getElementById("result");
+
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        currentUser = user;
+        const userRef = doc(db, "users", user.uid);
+        const userSnap = await getDoc(userRef);
+        if (userSnap.exists()) {
+          currentCoins = userSnap.data().coins || 0;
+          balanceEl.innerText = "Coins: " + currentCoins;
+        }
+      } else {
+        alert("Please login first.");
+        window.location.href = "login.html";
+      }
+    });
+
+    async function playNumberGame() {
+      const guess = parseInt(document.getElementById("guessNumber").value);
+      const betAmount = parseInt(document.getElementById("betAmount").value);
+
+      if (isNaN(guess) || guess < 1 || guess > 10) {
+        alert("Guess a number between 1 and 10");
+        return;
+      }
+
+      if (isNaN(betAmount) || betAmount < 10) {
+        alert("Minimum bet is 10 coins");
+        return;
+      }
+
+      if (betAmount > currentCoins) {
+        alert("Not enough coins");
+        return;
+      }
+
+      const winChance = 0.8;
+      const isWin = Math.random() < winChance;
+      const winningNumber = isWin ? guess : Math.floor(Math.random() * 10) + 1;
+
+      if (guess === winningNumber) {
+        currentCoins += betAmount;
+        resultEl.innerText = `🎉 You Won! Number: ${winningNumber} (+${betAmount} coins)`;
+      } else {
+        currentCoins -= betAmount;
+        resultEl.innerText = `😢 You Lost! Number was: ${winningNumber} (-${betAmount} coins)`;
+      }
+
+      const userRef = doc(db, "users", currentUser.uid);
+      await updateDoc(userRef, { coins: currentCoins });
+
+      balanceEl.innerText = "Coins: " + currentCoins;
+    }
+  </script>
+</body>
+</html>
