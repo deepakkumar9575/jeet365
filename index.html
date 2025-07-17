@@ -2,53 +2,81 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Jeet365 - Color & Number Prediction Game</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Jeet365 - Color & Number Prediction</title>
   <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet"/>
 </head>
 <body>
 
-  <!-- Header Section -->
-  <header>
-    <h1>Jeet365</h1>
-    <div class="navbar">
-      <a href="login.html">Login</a>
-      <a href="signup.html">Sign Up</a>
-      <a href="#contact">Contact</a>
+  <!-- 🔥 Hero Section -->
+  <header class="hero">
+    <div class="hero-content">
+      <h1>Jeet365</h1>
+      <p>Predict Smart. Play Bold. Win Big.</p>
+      <div class="hero-buttons">
+        <a href="login.html" class="btn green">Login</a>
+        <a href="signup.html" class="btn outline">Sign Up</a>
+      </div>
     </div>
   </header>
 
-  <!-- Hero Section -->
-  <section class="hero">
-    <h2>Welcome to Jeet365</h2>
-    <p>India’s #1 trusted Color & Number Prediction Platform</p>
-    <button onclick="location.href='login.html'">Start Playing</button>
+  <!-- 💡 How It Works Section -->
+  <section class="how-it-works">
+    <h2>How It Works</h2>
+    <div class="steps">
+      <div class="step">
+        <h3>1️⃣ Create Account</h3>
+        <p>Sign up using your mobile/email & secure login</p>
+      </div>
+      <div class="step">
+        <h3>2️⃣ Add Coins</h3>
+        <p>Add coins via UPI or manual payment</p>
+      </div>
+      <div class="step">
+        <h3>3️⃣ Start Playing</h3>
+        <p>Play Color & Number Games and win real cash</p>
+      </div>
+    </div>
   </section>
 
-  <!-- Features Section -->
+  <!-- 🎮 Game Types -->
+  <section class="games">
+    <h2>Our Games</h2>
+    <div class="game-list">
+      <div class="game-card">
+        <h3>🎨 Color Prediction</h3>
+        <p>Predict the winning color & earn coins.</p>
+        <a href="game.html" class="btn blue">Play Now</a>
+      </div>
+      <div class="game-card">
+        <h3>🔢 Number Prediction</h3>
+        <p>Choose the lucky number & multiply your coins.</p>
+        <a href="game.html" class="btn blue">Play Now</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 🚀 Features -->
   <section class="features">
-    <div class="feature-card">
-      <h3>Trusted & Secure</h3>
-      <p>UPI, Manual, Razorpay — 100% Safe Transactions</p>
-    </div>
-    <div class="feature-card">
-      <h3>Earn Daily</h3>
-      <p>Play smart with 80% win logic & earn real cash</p>
-    </div>
-    <div class="feature-card">
-      <h3>Instant Withdrawal</h3>
-      <p>Request withdrawal anytime — Fast approval</p>
+    <h2>Why Choose Jeet365?</h2>
+    <div class="features-grid">
+      <div class="feature-card">🔒 Secure Payments</div>
+      <div class="feature-card">⚡ Instant Coin Credit</div>
+      <div class="feature-card">📊 80% Winning Logic</div>
+      <div class="feature-card">💸 Manual Withdrawals</div>
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer id="contact">
-    <p>&copy; 2025 Jeet365. All rights reserved.</p>
-    <p>Contact: <a href="mailto:gindoripiplya@gmail.com" style="color:#00e6e6;">gindoripiplya@gmail.com</a> | WhatsApp: <a href="https://wa.me/919630868075" style="color:#00e6e6;">9630868075</a></p>
-    <p><a href="#">Terms & Conditions</a> | <a href="#">Privacy Policy</a></p>
+  <!-- 🔻 Footer -->
+  <footer>
+    <p>Contact us: <a href="mailto:jeet365support@gmail.com">jeet365support@gmail.com</a></p>
+    <p>WhatsApp: <a href="https://wa.me/91XXXXXXXXXX">Chat Now</a></p>
+    <p>© 2025 Jeet365. All rights reserved.</p>
   </footer>
 
-  <!-- Firebase config (load separately) -->
-  <script type="module" src="firebase-config.js"></script>
+  <!-- Firebase config -->
+  <script type="module" src="./firebase-config.js"></script>
+
 </body>
 </html>
