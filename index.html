@@ -2,144 +2,53 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Jeet365 - Color & Number Prediction</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet"/>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
-    }
-
-    body {
-      background: linear-gradient(to bottom, #000428, #004e92);
-      color: white;
-    }
-
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px;
-      background-color: #001f3f;
-    }
-
-    .logo {
-      font-size: 28px;
-      font-weight: bold;
-      color: #00ff99;
-    }
-
-    .nav-buttons button {
-      margin-left: 10px;
-      padding: 10px 20px;
-      background: #00ff99;
-      color: #000;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: 600;
-    }
-
-    .hero {
-      text-align: center;
-      padding: 60px 20px;
-    }
-
-    .hero h1 {
-      font-size: 36px;
-      color: #00ff99;
-      margin-bottom: 10px;
-    }
-
-    .hero p {
-      font-size: 18px;
-      margin-bottom: 30px;
-    }
-
-    .hero .cta-buttons button {
-      margin: 10px;
-      padding: 14px 26px;
-      font-size: 16px;
-      border-radius: 8px;
-      border: 2px solid #00ff99;
-      background: transparent;
-      color: #00ff99;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .hero .cta-buttons button:hover {
-      background: #00ff99;
-      color: #000;
-    }
-
-    section {
-      padding: 60px 20px;
-      text-align: center;
-    }
-
-    .features h2, .about h2 {
-      font-size: 28px;
-      margin-bottom: 20px;
-      color: #00ffcc;
-    }
-
-    .features p, .about p {
-      font-size: 16px;
-      max-width: 700px;
-      margin: auto;
-      margin-top: 10px;
-    }
-
-    footer {
-      background-color: #001f3f;
-      padding: 20px;
-      text-align: center;
-      color: #888;
-    }
-
-    @media (max-width: 600px) {
-      .hero h1 {
-        font-size: 24px;
-      }
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jeet365 - Color & Number Prediction Game</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+
+  <!-- Header Section -->
   <header>
-    <div class="logo">Jeet365</div>
-    <div class="nav-buttons">
-      <button onclick="location.href='login.html'">Login</button>
-      <button onclick="location.href='signup.html'">Signup</button>
+    <h1>Jeet365</h1>
+    <div class="navbar">
+      <a href="login.html">Login</a>
+      <a href="signup.html">Sign Up</a>
+      <a href="#contact">Contact</a>
     </div>
   </header>
 
+  <!-- Hero Section -->
   <section class="hero">
-    <h1>Jeeto har din, Jeet365 ke sath!</h1>
-    <p>India’s trusted color & number prediction platform. Start winning now.</p>
-    <div class="cta-buttons">
-      <button onclick="location.href='login.html'">Login & Play</button>
-      <button onclick="location.href='signup.html'">Create Account</button>
+    <h2>Welcome to Jeet365</h2>
+    <p>India’s #1 trusted Color & Number Prediction Platform</p>
+    <button onclick="location.href='login.html'">Start Playing</button>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features">
+    <div class="feature-card">
+      <h3>Trusted & Secure</h3>
+      <p>UPI, Manual, Razorpay — 100% Safe Transactions</p>
+    </div>
+    <div class="feature-card">
+      <h3>Earn Daily</h3>
+      <p>Play smart with 80% win logic & earn real cash</p>
+    </div>
+    <div class="feature-card">
+      <h3>Instant Withdrawal</h3>
+      <p>Request withdrawal anytime — Fast approval</p>
     </div>
   </section>
 
-  <section class="features">
-    <h2>Why Jeet365?</h2>
-    <p>🔒 Secure UPI Payments – Fast & safe deposits. Coins added manually after approval.</p>
-    <p>📊 80% Winning Algorithm – Smart logic for high win potential.</p>
-    <p>📥 Manual Withdrawal Approval – Withdraw requests reviewed & released manually.</p>
-  </section>
-
-  <section class="about">
-    <h2>Trust & Transparency</h2>
-    <p>Jeet365 is built for real income. Every coin is approved manually by admin. All deposits and withdrawals are verified, so users can feel safe and confident.</p>
-  </section>
-
-  <footer>
-    &copy; 2025 Jeet365. All rights reserved.
+  <!-- Footer -->
+  <footer id="contact">
+    <p>&copy; 2025 Jeet365. All rights reserved.</p>
+    <p>Contact: <a href="mailto:gindoripiplya@gmail.com" style="color:#00e6e6;">gindoripiplya@gmail.com</a> | WhatsApp: <a href="https://wa.me/919630868075" style="color:#00e6e6;">9630868075</a></p>
+    <p><a href="#">Terms & Conditions</a> | <a href="#">Privacy Policy</a></p>
   </footer>
+
+  <!-- Firebase config (load separately) -->
+  <script type="module" src="firebase-config.js"></script>
 </body>
 </html>
