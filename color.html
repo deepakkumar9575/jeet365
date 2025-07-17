@@ -1,0 +1,105 @@
+<!-- color.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Color Prediction - Jeet365</title>
+  <style>
+    body {
+      background: #000;
+      color: #fff;
+      font-family: sans-serif;
+      padding: 20px;
+    }
+    h2, .result {
+      text-align: center;
+    }
+    .coins {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+    .colors {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+    }
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .red { background: red; color: #fff; }
+    .green { background: limegreen; color: #000; }
+    .blue { background: dodgerblue; color: #fff; }
+    .result { margin-top: 20px; font-size: 18px; }
+  </style>
+</head>
+<body>
+  <h2>🎨 Color Prediction</h2>
+  <div class="coins" id="coinDisplay">Coins: Loading...</div>
+
+  <div class="colors">
+    <button class="red" onclick="playGame('Red')">Red</button>
+    <button class="green" onclick="playGame('Green')">Green</button>
+    <button class="blue" onclick="playGame('Blue')">Blue</button>
+  </div>
+
+  <div class="result" id="result"></div>
+
+  <script type="module">
+    import { auth, db } from './firebase-config.js';
+    import { doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+    const coinDisplay = document.getElementById("coinDisplay");
+    const resultEl = document.getElementById("result");
+
+    let currentUser = null;
+    let userRef;
+
+    const colors = ["Red", "Green", "Blue"];
+
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        currentUser = user;
+        userRef = doc(db, "users", user.uid);
+        const userSnap = await getDoc(userRef);
+        const coins = userSnap.data().coins || 0;
+        coinDisplay.innerText = `Coins: ${coins}`;
+      } else {
+        alert("Please login first");
+        window.location.href = "login.html";
+      }
+    });
+
+    async function playGame(choice) {
+      if (!currentUser) return;
+
+      const snap = await getDoc(userRef);
+      let coins = snap.data().coins || 0;
+
+      if (coins < 10) {
+        alert("Minimum 10 coins required to play!");
+        return;
+      }
+
+      const result = colors[Math.floor(Math.random() * colors.length)];
+      let win = result === choice;
+
+      coins -= 10;
+      if (win) coins += 18; // 80% win logic → win gives 8 extra
+
+      await updateDoc(userRef, { coins });
+      coinDisplay.innerText = `Coins: ${coins}`;
+
+      resultEl.innerHTML = `
+        Result: <strong>${result}</strong><br/>
+        You ${win ? "<span style='color:lime;'>Won</span>" : "<span style='color:red;'>Lost</span>"}!
+      `;
+    }
+  </script>
+</body>
+</html>
