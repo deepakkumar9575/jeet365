@@ -1,31 +1,118 @@
+<!-- admin.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Admin Panel - Jeet365</title>
-  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      font-family: Arial;
+      padding: 20px;
+      background-color: #0d0d0d;
+      color: white;
+    }
+    h2 {
+      text-align: center;
+    }
+    .request {
+      border: 1px solid #444;
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 10px;
+      background-color: #1a1a1a;
+    }
+    .request button {
+      margin: 5px;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .approve { background-color: green; color: white; }
+    .reject { background-color: red; color: white; }
+  </style>
 </head>
 <body>
-  <div class="admin-container">
-    <h2>🛠️ Admin Panel - Jeet365</h2>
+  <h2>Admin Panel - Coin Requests</h2>
+  <div id="requestList">Loading...</div>
 
-    <!-- Manual Coin Add -->
-    <form id="manualCoinForm">
-      <input type="email" id="targetEmail" placeholder="User Email" required />
-      <input type="number" id="targetAmount" placeholder="Coins to Add" min="1" required />
-      <button type="submit">Add Coins</button>
-    </form>
+  <script type="module">
+    import { auth, db } from './firebase-config.js';
+    import {
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import {
+      collection, query, where, getDocs, updateDoc, doc, getDoc
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-    <hr/>
+    const requestList = document.getElementById("requestList");
 
-    <!-- Requests Section -->
-    <h3>Pending Requests</h3>
-    <div id="requestList">Loading...</div>
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const userRef = doc(db, "users", user.uid);
+        const userSnap = await getDoc(userRef);
+        if (!userSnap.exists() || !userSnap.data().isAdmin) {
+          alert("Access denied. Not an admin.");
+          window.location.href = "index.html";
+          return;
+        }
 
-    <a href="dashboard.html" class="btn">⬅ Back to Dashboard</a>
-  </div>
+        const q = query(collection(db, "requests"), where("status", "==", "pending"));
+        const querySnapshot = await getDocs(q);
+        requestList.innerHTML = "";
 
-  <script type="module" src="admin.js"></script>
+        if (querySnapshot.empty) {
+          requestList.innerHTML = "<p>No pending requests.</p>";
+        }
+
+        querySnapshot.forEach(docSnap => {
+          const data = docSnap.data();
+          const div = document.createElement("div");
+          div.className = "request";
+          div.innerHTML = `
+            <p><b>Email:</b> ${data.email}</p>
+            <p><b>Type:</b> ${data.type}</p>
+            <p><b>Amount:</b> ${data.amount}</p>
+            <p><b>Status:</b> ${data.status}</p>
+            <button class="approve">Approve</button>
+            <button class="reject">Reject</button>
+          `;
+
+          div.querySelector(".approve").onclick = async () => {
+            await updateDoc(doc(db, "requests", docSnap.id), {
+              status: "approved"
+            });
+            if (data.type === "add") {
+              const userRef = doc(db, "users", data.uid);
+              const userSnap = await getDoc(userRef);
+              if (userSnap.exists()) {
+                const currentCoins = userSnap.data().coins || 0;
+                await updateDoc(userRef, {
+                  coins: currentCoins + data.amount
+                });
+              }
+            }
+            alert("Approved successfully");
+            location.reload();
+          };
+
+          div.querySelector(".reject").onclick = async () => {
+            await updateDoc(doc(db, "requests", docSnap.id), {
+              status: "rejected"
+            });
+            alert("Rejected successfully");
+            location.reload();
+          };
+
+          requestList.appendChild(div);
+        });
+
+      } else {
+        alert("Please login");
+        window.location.href = "login.html";
+      }
+    });
+  </script>
 </body>
 </html>
