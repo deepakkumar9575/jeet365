@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login | Jeet365</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f8ff;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .auth-container {
+      background: #fff;
+      padding: 30px;
+      max-width: 400px;
+      width: 100%;
+      border-radius: 10px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+    .tabs {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .tabs button {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      background: #e0f7fa;
+      cursor: pointer;
+      font-weight: bold;
+      border-radius: 8px 8px 0 0;
+    }
+    .tabs button.active {
+      background: #00bcd4;
+      color: #fff;
+    }
+    .form {
+      display: none;
+    }
+    .form.active {
+      display: block;
+    }
+    .form input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    .form button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 16px;
+      background: #00bcd4;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .form p {
+      font-size: 13px;
+      margin-top: 10px;
+    }
+    .form p a {
+      color: #00bcd4;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="auth-container">
+    <div class="tabs">
+      <button id="loginTab" class="active" onclick="showForm('login')">Login</button>
+      <button id="signupTab" onclick="showForm('signup')">Sign Up</button>
+    </div>
+
+    <!-- Login Form -->
+    <div id="loginForm" class="form active">
+      <input type="email" id="loginEmail" placeholder="Email" />
+      <input type="password" id="loginPassword" placeholder="Password" />
+      <button onclick="loginUser()">Login</button>
+      <p><a href="#">Forgot password?</a></p>
+    </div>
+
+    <!-- Signup Form -->
+    <div id="signupForm" class="form">
+      <input type="email" id="signupEmail" placeholder="Email" />
+      <input type="password" id="signupPassword" placeholder="Password" />
+      <label><input type="checkbox" id="terms"> I agree to Terms & Conditions</label>
+      <button onclick="signupUser()">Sign Up</button>
+    </div>
+  </div>
+
+  <script>
+    function showForm(type) {
+      document.getElementById('loginForm').classList.remove('active');
+      document.getElementById('signupForm').classList.remove('active');
+      document.getElementById('loginTab').classList.remove('active');
+      document.getElementById('signupTab').classList.remove('active');
+
+      if (type === 'login') {
+        document.getElementById('loginForm').classList.add('active');
+        document.getElementById('loginTab').classList.add('active');
+      } else {
+        document.getElementById('signupForm').classList.add('active');
+        document.getElementById('signupTab').classList.add('active');
+      }
+    }
+  </script>
+
+  <script type="module" src="firebase-config.js"></script>
+</body>
+</html>
