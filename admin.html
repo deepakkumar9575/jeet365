@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Panel - Jeet365</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="admin-container">
+    <h2>🛠️ Admin Panel - Jeet365</h2>
+
+    <!-- Manual Coin Add -->
+    <form id="manualCoinForm">
+      <input type="email" id="targetEmail" placeholder="User Email" required />
+      <input type="number" id="targetAmount" placeholder="Coins to Add" min="1" required />
+      <button type="submit">Add Coins</button>
+    </form>
+
+    <hr/>
+
+    <!-- Requests Section -->
+    <h3>Pending Requests</h3>
+    <div id="requestList">Loading...</div>
+
+    <a href="dashboard.html" class="btn">⬅ Back to Dashboard</a>
+  </div>
+
+  <script type="module" src="admin.js"></script>
+</body>
+</html>
