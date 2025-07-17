@@ -4,27 +4,29 @@ import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } f
 // Initialize Firebase Auth
 const auth = getAuth();
 
-// Sign Up Function
-window.signupUser = function () {
+// Replace your existing signupUser with this 👇
+window.signupUser = async function () {
   const email = document.getElementById('signupEmail').value;
   const password = document.getElementById('signupPassword').value;
-  const termsChecked = document.getElementById('terms').checked;
+  const agreed = document.getElementById('terms').checked;
+  if (!agreed) { alert("Please agree to Terms"); return; }
 
-  if (!termsChecked) {
-    alert("Please agree to the Terms & Conditions");
-    return;
-  }
+  try {
+    const cred = await createUserWithEmailAndPassword(auth, email, password);
 
-  createUserWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      alert("Sign up successful! Now login.");
-      showForm('login');
-    })
-    .catch((error) => {
-      alert("Signup Error: " + error.message);
+    // ⬇️ create Firestore doc with 100 coins
+    await setDoc(doc(db, "users", cred.user.uid), {
+      email: cred.user.email,
+      coins: 100,
+      createdAt: Date.now()
     });
-}
 
+    alert("Signup successful! You’ve received 100 coins 👌");
+    showForm('login');
+  } catch (err) {
+    alert("Signup Error: " + err.message);
+  }
+};
 // Login Function
 window.loginUser = function () {
   const email = document.getElementById('loginEmail').value;
