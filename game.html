@@ -4,122 +4,56 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Color Prediction Game - Jeet365</title>
+  <title>Play & Win - Jeet365</title>
+  <link rel="stylesheet" href="style.css">
   <style>
-    body {
-      background: #111;
-      color: white;
-      font-family: Arial;
-      padding: 20px;
-    }
-    h2 {
+    .game-container {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 2rem;
       text-align: center;
+      background-color: #121212;
+      border-radius: 1rem;
+      color: #fff;
+      box-shadow: 0 0 15px rgba(0,0,0,0.6);
     }
-    .balance {
-      margin-bottom: 20px;
-      font-weight: bold;
-    }
-    .game {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .game input, .game select, .game button {
-      padding: 10px;
+    .color-buttons button {
+      width: 100px;
       margin: 10px;
-      font-size: 16px;
+      padding: 10px;
+      font-weight: bold;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
     }
-    .result {
+    .red { background-color: crimson; }
+    .green { background-color: seagreen; }
+    .violet { background-color: rebeccapurple; }
+    #resultMsg {
       margin-top: 20px;
-      font-size: 18px;
+      font-size: 1.2rem;
       font-weight: bold;
     }
   </style>
 </head>
 <body>
-  <h2>🎮 Jeet365 - Color Prediction Game</h2>
-  <div class="balance" id="balance">Coins: Loading...</div>
 
-  <div class="game">
-    <label>Choose Color:</label>
-    <select id="colorSelect">
-      <option value="red">Red</option>
-      <option value="green">Green</option>
-      <option value="blue">Blue</option>
-    </select>
+  <div class="game-container">
+    <h2>🎮 Jeet365 - Color Prediction</h2>
+    <p>Current Coins: <span id="coinBalance">--</span></p>
+    <input type="number" id="betAmount" placeholder="Enter Bet Amount (min 10)" min="10" />
+    
+    <div class="color-buttons">
+      <button class="red" onclick="placeBet('Red')">Red</button>
+      <button class="green" onclick="placeBet('Green')">Green</button>
+      <button class="violet" onclick="placeBet('Violet')">Violet</button>
+    </div>
 
-    <label>Bet Amount:</label>
-    <input type="number" id="betAmount" min="10" placeholder="Min 10 coins" />
-
-    <button onclick="placeBet()">Place Bet</button>
-    <div class="result" id="result"></div>
+    <div id="resultMsg"></div>
+    <br><a href="dashboard.html" style="color: #00f;">🔙 Back to Dashboard</a>
   </div>
 
-  <script type="module">
-    import { auth, db } from './firebase-config.js';
-    import {
-      doc, getDoc, updateDoc
-    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-    import {
-      onAuthStateChanged
-    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-    let currentUser = null;
-    let currentCoins = 0;
-
-    const balanceEl = document.getElementById("balance");
-    const resultEl = document.getElementById("result");
-
-    onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        currentUser = user;
-        const userRef = doc(db, "users", user.uid);
-        const userSnap = await getDoc(userRef);
-        if (userSnap.exists()) {
-          currentCoins = userSnap.data().coins || 0;
-          balanceEl.innerText = "Coins: " + currentCoins;
-        }
-      } else {
-        alert("Please login first.");
-        window.location.href = "login.html";
-      }
-    });
-
-    async function placeBet() {
-      const selectedColor = document.getElementById("colorSelect").value;
-      const betAmount = parseInt(document.getElementById("betAmount").value);
-
-      if (isNaN(betAmount) || betAmount < 10) {
-        alert("Minimum bet is 10 coins");
-        return;
-      }
-
-      if (betAmount > currentCoins) {
-        alert("Not enough coins");
-        return;
-      }
-
-      const colors = ["red", "green", "blue"];
-      const winChance = 0.8; // 80% chance to win
-      const isWin = Math.random() < winChance;
-      const winColor = isWin ? selectedColor : colors[Math.floor(Math.random() * 3)];
-
-      if (selectedColor === winColor) {
-        currentCoins += betAmount;
-        resultEl.innerText = `You Won! Color: ${winColor} (+${betAmount} coins)`;
-      } else {
-        currentCoins -= betAmount;
-        resultEl.innerText = `You Lost! Color was: ${winColor} (-${betAmount} coins)`;
-      }
-
-      // Update Firebase
-      const userRef = doc(db, "users", currentUser.uid);
-      await updateDoc(userRef, {
-        coins: currentCoins
-      });
-
-      balanceEl.innerText = "Coins: " + currentCoins;
-    }
-  </script>
+  <script type="module" src="game.js"></script>
 </body>
 </html>
