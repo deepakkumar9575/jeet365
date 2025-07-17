@@ -2,67 +2,144 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Jeet365 – Win Daily</title>
-  <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Jeet365 - Color & Number Prediction</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet"/>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(to bottom, #000428, #004e92);
+      color: white;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+      background-color: #001f3f;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: bold;
+      color: #00ff99;
+    }
+
+    .nav-buttons button {
+      margin-left: 10px;
+      padding: 10px 20px;
+      background: #00ff99;
+      color: #000;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 60px 20px;
+    }
+
+    .hero h1 {
+      font-size: 36px;
+      color: #00ff99;
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      font-size: 18px;
+      margin-bottom: 30px;
+    }
+
+    .hero .cta-buttons button {
+      margin: 10px;
+      padding: 14px 26px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 2px solid #00ff99;
+      background: transparent;
+      color: #00ff99;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .hero .cta-buttons button:hover {
+      background: #00ff99;
+      color: #000;
+    }
+
+    section {
+      padding: 60px 20px;
+      text-align: center;
+    }
+
+    .features h2, .about h2 {
+      font-size: 28px;
+      margin-bottom: 20px;
+      color: #00ffcc;
+    }
+
+    .features p, .about p {
+      font-size: 16px;
+      max-width: 700px;
+      margin: auto;
+      margin-top: 10px;
+    }
+
+    footer {
+      background-color: #001f3f;
+      padding: 20px;
+      text-align: center;
+      color: #888;
+    }
+
+    @media (max-width: 600px) {
+      .hero h1 {
+        font-size: 24px;
+      }
+    }
+  </style>
 </head>
 <body>
   <header>
-    <div class="container">
-      <h1 class="logo">Jeet<span>365</span></h1>
-      <nav>
-        <a href="login.html" class="btn">Login</a>
-        <a href="signup.html" class="btn btn-alt">Signup</a>
-      </nav>
+    <div class="logo">Jeet365</div>
+    <div class="nav-buttons">
+      <button onclick="location.href='login.html'">Login</button>
+      <button onclick="location.href='signup.html'">Signup</button>
     </div>
   </header>
 
   <section class="hero">
-    <div class="container">
-      <h2>Jeeto har din, <br><span>Jeet365 ke sath!</span></h2>
-      <p>India’s trusted color & number prediction platform. Start winning now.</p>
-      <div class="cta-buttons">
-        <a href="login.html" class="btn big">Login & Play</a>
-        <a href="signup.html" class="btn-alt big">Create Account</a>
-      </div>
+    <h1>Jeeto har din, Jeet365 ke sath!</h1>
+    <p>India’s trusted color & number prediction platform. Start winning now.</p>
+    <div class="cta-buttons">
+      <button onclick="location.href='login.html'">Login & Play</button>
+      <button onclick="location.href='signup.html'">Create Account</button>
     </div>
   </section>
 
   <section class="features">
-    <div class="container">
-      <div class="feature-card">
-        <h3>🔒 Secure UPI Payments</h3>
-        <p>Fast & safe deposits. Coins added manually after approval.</p>
-      </div>
-      <div class="feature-card">
-        <h3>📊 80% Winning Algorithm</h3>
-        <p>Smart prediction logic ensures high win potential.</p>
-      </div>
-      <div class="feature-card">
-        <h3>🧾 Manual Withdrawal Approval</h3>
-        <p>Withdraw requests reviewed and released manually.</p>
-      </div>
-    </div>
+    <h2>Why Jeet365?</h2>
+    <p>🔒 Secure UPI Payments – Fast & safe deposits. Coins added manually after approval.</p>
+    <p>📊 80% Winning Algorithm – Smart logic for high win potential.</p>
+    <p>📥 Manual Withdrawal Approval – Withdraw requests reviewed & released manually.</p>
   </section>
 
-  <section class="contact">
-    <div class="container">
-      <h3>Need Help? Contact Us</h3>
-      <p>📞 WhatsApp: <a href="https://wa.me/919630868075">9630868075</a></p>
-      <p>📧 Email: <a href="mailto:gindoripiplya@gmail.com">gindoripiplya@gmail.com</a></p>
-    </div>
+  <section class="about">
+    <h2>Trust & Transparency</h2>
+    <p>Jeet365 is built for real income. Every coin is approved manually by admin. All deposits and withdrawals are verified, so users can feel safe and confident.</p>
   </section>
 
   <footer>
-    <div class="container">
-      <p>&copy; 2025 Jeet365. All rights reserved.</p>
-      <div class="links">
-        <a href="#">Terms & Conditions</a>
-        <a href="#">Privacy Policy</a>
-        <a href="#">Contact</a>
-      </div>
-    </div>
+    &copy; 2025 Jeet365. All rights reserved.
   </footer>
 </body>
 </html>
