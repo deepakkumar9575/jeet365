@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Request Coins - Jeet365</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="form-container">
+    <h2>💰 Recharge / Withdraw Request</h2>
+    <form id="requestForm">
+      <select id="requestType" required>
+        <option value="">Select Type</option>
+        <option value="Add">Add Coins (Recharge)</option>
+        <option value="Withdraw">Withdraw Coins</option>
+      </select>
+      <input type="number" id="requestAmount" placeholder="Amount in Coins" min="10" required />
+      <button type="submit">Submit Request</button>
+    </form>
+    <a href="dashboard.html" class="btn">⬅ Back to Dashboard</a>
+  </div>
+
+  <script type="module" src="request.js"></script>
+</body>
+</html>
